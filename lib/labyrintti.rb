@@ -7,7 +7,7 @@ require 'active_support/core_ext/string'
 
 module Labyrintti
   extend self
-  attr_accessor :user, :password, :debug
+  attr_accessor :user, :password, :debug, :secure
   attr_writer :user_agent, :logger
 
   # ensures the setup only gets run once
@@ -19,6 +19,7 @@ module Labyrintti
     @user_agent = nil
     @user = nil
     @password = nil
+    @secure = nil
   end
 
   def user_agent

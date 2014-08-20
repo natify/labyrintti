@@ -14,6 +14,7 @@ module Labyrintti
         password: password
       }
       @service_options = service_options
+      @service_options[:secure] = true if ::Labyrintti.secure
     end
 
     def service_url
