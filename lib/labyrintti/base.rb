@@ -33,7 +33,7 @@ module Labyrintti
 
     def process_response(response)
       if response.success?
-        true
+        { ok: true }
       else
         { errors: parse_error(response.body) }
       end
@@ -50,7 +50,7 @@ module Labyrintti
             description:   res[:description]
           }
         else
-          { unknown_error: 1 }
+          { error: line }
         end
       end
     end

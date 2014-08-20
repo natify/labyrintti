@@ -54,11 +54,15 @@ RSpec.describe ::Labyrintti::Base do
     let(:client) { described_class.new('user', 'password', gateway_options) }
     subject { client.make_api_call(options) }
 
+    before :each do
+      stub_request(:post, "http://gw.labyrintti.com:28080/sendsms").
+        to_return(:status => 200, :body => "", :headers => {})
+    end
+
     it 'should merge default and service options' do
       expect(options).to receive(:merge!).with(default_options)
       expect(options).to receive(:merge!).with(gateway_options)
-      stub_request(:post, "http://gw.labyrintti.com:28080/sendsms").
-        to_return(:status => 200, :body => "", :headers => {})
+
       subject
     end
     it 'should clean empty values' do
@@ -78,6 +82,8 @@ RSpec.describe ::Labyrintti::Base do
       expect(client).to receive(:process_response).with(response)
       subject
     end
+    it { is_expected.to eq({ok: true}) }
+
   end
   context '#process_response' do
     subject { super().process_response(response) }
@@ -108,7 +114,7 @@ RSpec.describe ::Labyrintti::Base do
     context 'unknown error' do
       let(:body) { 'some error' }
       it { is_expected.to eq([{
-        unknown_error: 1
+        error: body
       }]) }
 
     end
